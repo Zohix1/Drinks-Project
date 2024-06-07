@@ -99,6 +99,13 @@ public interface DepotItemMapperEx {
             @Param("endTime") String endTime,
             @Param("creatorArray") String[] creatorArray);
 
+    BigDecimal outOrders(
+            @Param("type") String type,
+            @Param("subType") String subType,
+            @Param("beginTime") String beginTime,
+            @Param("endTime") String endTime,
+            @Param("creatorArray") String[] creatorArray);
+
     BigDecimal inOrOutRetailPrice(
             @Param("type") String type,
             @Param("subType") String subType,

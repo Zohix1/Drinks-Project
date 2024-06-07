@@ -367,6 +367,26 @@ public class DepotItemService {
         }
         return result;
     }
+    /**
+     * 统计销售的订单量
+     * @param type
+     * @param subType
+     * @param month
+     * @return
+     * @throws Exception
+     */
+    public BigDecimal outOrders(String type, String subType, String month, String roleType) throws Exception{
+        BigDecimal result= BigDecimal.ZERO;
+        try{
+            String [] creatorArray = depotHeadService.getCreatorArray(roleType);
+            String beginTime = Tools.firstDayOfMonth(month) + BusinessConstants.DAY_FIRST_TIME;
+            String endTime = Tools.lastDayOfMonth(month) + BusinessConstants.DAY_LAST_TIME;
+            result = depotItemMapperEx.outOrders(type, subType, beginTime, endTime, creatorArray);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return result;
+    }
 
     /**
      * 统计零售的总金额

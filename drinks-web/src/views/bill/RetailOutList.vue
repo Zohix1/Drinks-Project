@@ -223,10 +223,11 @@
               }
             }
           },
-          { title: '找零', dataIndex: 'backAmount',width:50},
+          { title: '找零', dataIndex: 'backAmount',width:50}
+          /*,
           { title: '状态', dataIndex: 'status', width: 80, align: "center",
             scopedSlots: { customRender: 'customRenderStatus' }
-          }
+          }*/
         ],
         url: {
           list: "/depotHead/list",

@@ -1016,6 +1016,8 @@ public class DepotHeadService {
                 today, Tools.getNow3(), creatorArray); //今日零售出库
         BigDecimal todayRetailSaleBack = getBuyAndSaleRetailStatistics("入库", "零售退货",
                 today, Tools.getNow3(), creatorArray); //今日零售退货
+        BigDecimal todayOrders = getSaleOrdersBasicStatistics("出库", "零售",
+                0, today, Tools.getNow3(), creatorArray); //今日销售出库
         //本月
         BigDecimal monthBuy = getBuyAndSaleBasicStatistics("入库", "采购",
                 1, monthFirstDay, Tools.getNow3(), creatorArray); //本月采购入库
@@ -1029,6 +1031,8 @@ public class DepotHeadService {
                 monthFirstDay, Tools.getNow3(), creatorArray); //本月零售出库
         BigDecimal monthRetailSaleBack = getBuyAndSaleRetailStatistics("入库", "零售退货",
                 monthFirstDay, Tools.getNow3(), creatorArray); //本月零售退货
+        BigDecimal monthOrders = getSaleOrdersBasicStatistics("出库", "零售",
+                0,monthFirstDay, Tools.getNow3(), creatorArray); //本月零售订单量
         //昨日
         BigDecimal yesterdayBuy = getBuyAndSaleBasicStatistics("入库", "采购",
                 1, yesterdayBegin, yesterdayEnd, creatorArray); //昨日采购入库
@@ -1042,6 +1046,8 @@ public class DepotHeadService {
                 yesterdayBegin, yesterdayEnd, creatorArray); //昨日零售出库
         BigDecimal yesterdayRetailSaleBack = getBuyAndSaleRetailStatistics("入库", "零售退货",
                 yesterdayBegin, yesterdayEnd, creatorArray); //昨日零售退货
+        BigDecimal yesterdayOrders = getSaleOrdersBasicStatistics("出库", "零售",
+                0, yesterdayBegin, yesterdayEnd, creatorArray); //昨日零售订单量
         //今年
         BigDecimal yearBuy = getBuyAndSaleBasicStatistics("入库", "采购",
                 1, yearBegin, yearEnd, creatorArray); //今年采购入库
@@ -1055,17 +1061,23 @@ public class DepotHeadService {
                 yearBegin, yearEnd, creatorArray); //今年零售出库
         BigDecimal yearRetailSaleBack = getBuyAndSaleRetailStatistics("入库", "零售退货",
                 yearBegin, yearEnd, creatorArray); //今年零售退货
+        BigDecimal yearOrders = getSaleOrdersBasicStatistics("出库", "销售",
+                0, yearBegin, yearEnd, creatorArray); //今年零售订单量
         map.put("todayBuy", roleService.parsePriceByLimit(todayBuy.subtract(todayBuyBack), "buy", "***", request));
         map.put("todaySale", roleService.parsePriceByLimit(todaySale.subtract(todaySaleBack), "sale", "***", request));
+        map.put("todayOrders", roleService.parsePriceByLimit(todayOrders, "sale", "***", request));
         map.put("todayRetailSale", roleService.parsePriceByLimit(todayRetailSale.subtract(todayRetailSaleBack), "retail", "***", request));
         map.put("monthBuy", roleService.parsePriceByLimit(monthBuy.subtract(monthBuyBack), "buy", "***", request));
         map.put("monthSale", roleService.parsePriceByLimit(monthSale.subtract(monthSaleBack), "sale", "***", request));
+        map.put("monthOrders", roleService.parsePriceByLimit(monthOrders, "sale", "***", request));
         map.put("monthRetailSale", roleService.parsePriceByLimit(monthRetailSale.subtract(monthRetailSaleBack), "retail", "***", request));
         map.put("yesterdayBuy", roleService.parsePriceByLimit(yesterdayBuy.subtract(yesterdayBuyBack), "buy", "***", request));
         map.put("yesterdaySale", roleService.parsePriceByLimit(yesterdaySale.subtract(yesterdaySaleBack), "sale", "***", request));
+        map.put("yesterdayOrders", roleService.parsePriceByLimit(yesterdayOrders, "sale", "***", request));
         map.put("yesterdayRetailSale", roleService.parsePriceByLimit(yesterdayRetailSale.subtract(yesterdayRetailSaleBack), "retail", "***", request));
         map.put("yearBuy", roleService.parsePriceByLimit(yearBuy.subtract(yearBuyBack), "buy", "***", request));
         map.put("yearSale", roleService.parsePriceByLimit(yearSale.subtract(yearSaleBack), "sale", "***", request));
+        map.put("yearOrders", roleService.parsePriceByLimit(yearOrders, "sale", "***", request));
         map.put("yearRetailSale", roleService.parsePriceByLimit(yearRetailSale.subtract(yearRetailSaleBack), "retail", "***", request));
         return map;
     }
@@ -1073,6 +1085,10 @@ public class DepotHeadService {
     public BigDecimal getBuyAndSaleBasicStatistics(String type, String subType, Integer hasSupplier,
                                                    String beginTime, String endTime, String[] creatorArray) {
         return depotHeadMapperEx.getBuyAndSaleBasicStatistics(type, subType, hasSupplier, beginTime, endTime, creatorArray);
+    }
+    public BigDecimal getSaleOrdersBasicStatistics(String type, String subType, Integer hasSupplier,
+                                                   String beginTime, String endTime, String[] creatorArray) {
+        return depotHeadMapperEx.getSaleOrdersBasicStatistics(type, subType, hasSupplier, beginTime, endTime, creatorArray);
     }
 
     public BigDecimal getBuyAndSaleRetailStatistics(String type, String subType,
