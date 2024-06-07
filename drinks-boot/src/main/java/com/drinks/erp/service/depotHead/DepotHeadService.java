@@ -1061,7 +1061,7 @@ public class DepotHeadService {
                 yearBegin, yearEnd, creatorArray); //今年零售出库
         BigDecimal yearRetailSaleBack = getBuyAndSaleRetailStatistics("入库", "零售退货",
                 yearBegin, yearEnd, creatorArray); //今年零售退货
-        BigDecimal yearOrders = getSaleOrdersBasicStatistics("出库", "销售",
+        BigDecimal yearOrders = getSaleOrdersBasicStatistics("出库", "零售",
                 0, yearBegin, yearEnd, creatorArray); //今年零售订单量
         map.put("todayBuy", roleService.parsePriceByLimit(todayBuy.subtract(todayBuyBack), "buy", "***", request));
         map.put("todaySale", roleService.parsePriceByLimit(todaySale.subtract(todaySaleBack), "sale", "***", request));
