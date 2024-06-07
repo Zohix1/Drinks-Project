@@ -494,19 +494,19 @@ public class DepotItemService {
                 Unit unitInfo = materialService.findUnit(materialExtend.getMaterialId()); //查询计量单位信息
                 if (StringUtil.isExist(rowObj.get("operNumber"))) {
                     depotItem.setOperNumber(rowObj.getBigDecimal("operNumber"));
-                    String unit = rowObj.get("unit").toString();
+//                    String unit = rowObj.get("unit").toString();
                     BigDecimal oNumber = rowObj.getBigDecimal("operNumber");
                     if (StringUtil.isNotEmpty(unitInfo.getName())) {
                         String basicUnit = unitInfo.getBasicUnit(); //基本单位
-                        if (unit.equals(basicUnit)) { //如果等于基本单位
-                            depotItem.setBasicNumber(oNumber); //数量一致
-                        } else if (unit.equals(unitInfo.getOtherUnit())) { //如果等于副单位
-                            depotItem.setBasicNumber(oNumber.multiply(new BigDecimal(unitInfo.getRatio())) ); //数量乘以比例
-                        } else if (unit.equals(unitInfo.getOtherUnitTwo())) { //如果等于副单位2
-                            depotItem.setBasicNumber(oNumber.multiply(new BigDecimal(unitInfo.getRatioTwo())) ); //数量乘以比例
-                        } else if (unit.equals(unitInfo.getOtherUnitThree())) { //如果等于副单位3
-                            depotItem.setBasicNumber(oNumber.multiply(new BigDecimal(unitInfo.getRatioThree())) ); //数量乘以比例
-                        }
+//                        if (unit.equals(basicUnit)) { //如果等于基本单位
+//                            depotItem.setBasicNumber(oNumber); //数量一致
+//                        } else if (unit.equals(unitInfo.getOtherUnit())) { //如果等于副单位
+//                            depotItem.setBasicNumber(oNumber.multiply(new BigDecimal(unitInfo.getRatio())) ); //数量乘以比例
+//                        } else if (unit.equals(unitInfo.getOtherUnitTwo())) { //如果等于副单位2
+//                            depotItem.setBasicNumber(oNumber.multiply(new BigDecimal(unitInfo.getRatioTwo())) ); //数量乘以比例
+//                        } else if (unit.equals(unitInfo.getOtherUnitThree())) { //如果等于副单位3
+//                            depotItem.setBasicNumber(oNumber.multiply(new BigDecimal(unitInfo.getRatioThree())) ); //数量乘以比例
+//                        }
                     } else {
                         depotItem.setBasicNumber(oNumber); //其他情况
                     }

@@ -39,7 +39,7 @@
                   <a-input placeholder="请输入型号" v-decorator.trim="[ 'model' ]" />
                 </a-form-item>
               </a-col>
-              <a-col :md="6" :sm="24">
+              <!--<a-col :md="6" :sm="24">
                 <a-form-item :labelCol="{xs: { span: 24 },sm: { span: 4 }}" :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" label="单位"
                   data-step="4" data-title="单位" data-intro="此处支持单个单位和多单位，勾选多单位就可以切换到多单位的下拉框，多单位需要先在【计量单位】页面进行录入。
                   比如牛奶有瓶和箱两种单位，12瓶=1箱，这就构成了多单位，多单位中有个换算比例">
@@ -65,7 +65,7 @@
                     </a-col>
                   </a-row>
                 </a-form-item>
-              </a-col>
+              </a-col>-->
             </a-row>
             <a-row class="form-row" :gutter="24">
               <a-col :md="6" :sm="24">
@@ -118,7 +118,7 @@
                   </a-tooltip>
                 </a-form-item>
               </a-col>
-              <a-col :md="6" :sm="24" v-if="!model.id">
+              <!--<a-col :md="6" :sm="24" v-if="!model.id">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="多属性" data-step="11" data-title="多属性"
                   data-intro="多属性是针对的sku商品（比如服装、鞋帽行业），此处开关如果启用就可以在下方进行多sku的配置，配置具体的颜色、尺码之类的组合">
                   <a-tooltip title="多属性针对服装、鞋帽等行业，需要先录入单位才能激活此处输入框">
@@ -131,7 +131,7 @@
                     </a-select>
                   </a-tooltip>
                 </a-form-item>
-              </a-col>
+              </a-col>-->
             </a-row>
             <a-row class="form-row" :gutter="24">
               <a-col :md="12" :sm="24" v-if="manySkuSelected>=1">
@@ -173,7 +173,7 @@
                 <template #buttonAfter>
                   <a-button @click="batchSetPrice('purchase')">采购价-批量</a-button>
                   <a-button style="margin-left: 8px" @click="batchSetPrice('commodity')">零售价-批量</a-button>
-                  <a-button style="margin-left: 8px" @click="batchSetPrice('wholesale')">销售价-批量</a-button>
+<!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('wholesale')">销售价-批量</a-button>-->
                   <a-button style="margin-left: 8px" @click="batchSetPrice('low')">最低售价-批量</a-button>
                 </template>
               </j-editable-table>
@@ -341,22 +341,22 @@
                 { pattern: /^\d{4,13}$/, message: '4到13位数字' },
                 { handler: this.validateBarCode}]
             },
-            {
+            /*{
               title: '单位', key: 'commodityUnit', width: '8%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}',
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
             {
               title: '多属性', key: 'sku', width: '20%', type: FormTypes.input, defaultValue: '', readonly:true, placeholder: '点击生成条码赋值'
-            },
+            },*/
             {
               title: '采购价', key: 'purchaseDecimal', width: '9%', type: FormTypes.inputNumber, defaultValue: '', placeholder: '请输入${title}'
             },
             {
               title: '零售价', key: 'commodityDecimal', width: '9%', type: FormTypes.inputNumber, defaultValue: '', placeholder: '请输入${title}'
             },
-            {
+            /*{
               title: '销售价', key: 'wholesaleDecimal', width: '9%', type: FormTypes.inputNumber, defaultValue: '', placeholder: '请输入${title}'
-            },
+            },*/
             {
               title: '最低售价', key: 'lowDecimal', width: '9%', type: FormTypes.inputNumber, defaultValue: '', placeholder: '请输入${title}'
             }
@@ -388,12 +388,13 @@
               { required: true, message: '请输入名称!' },
               { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' }
             ]
-          },
+          }
+          /*,
           unit:{
             rules: [
               { required: true, message: '请输入单位!' }
             ]
-          }
+          }*/
         },
         url: {
           add: '/material/add',
@@ -416,7 +417,7 @@
       },
       add () {
         //隐藏多属性
-        this.meTable.columns[2].type = FormTypes.hidden
+        // this.meTable.columns[2].type = FormTypes.hidden
         // 默认新增一条数据
         this.getAllTable().then(editableTables => {
           editableTables[0].add()
@@ -467,12 +468,12 @@
           }
           let params = { materialId: this.model.id }
           //编辑商品的时候多属性字段可以修改
-          this.meTable.columns[2].readonly = false
+          // this.meTable.columns[2].readonly = false
           this.requestMeTableData(this.url.materialsExtendList, params, this.meTable)
           this.requestDepotTableData(this.url.depotWithStock, { mId: this.model.id }, this.depotTable)
         } else {
           this.switchDisabled = false
-          this.meTable.columns[2].readonly = true
+          // this.meTable.columns[2].readonly = true
           this.requestDepotTableData(this.url.depotWithStock, { mId: 0 }, this.depotTable)
         }
       },
@@ -480,13 +481,13 @@
       requestMeTableData(url, params, tab) {
         tab.loading = true
         getAction(url, params).then(res => {
-          for (let i = 0; i < res.data.rows.length; i++) {
+          /*for (let i = 0; i < res.data.rows.length; i++) {
             if(res.data.rows[i].sku) {
               this.meTable.columns[2].type = FormTypes.input
             } else {
               this.meTable.columns[2].type = FormTypes.hidden
             }
-          }
+          }*/
           tab.dataSource = res.data.rows || []
         }).finally(() => {
           tab.loading = false
@@ -551,10 +552,10 @@
       },
       /** 发起新增或修改的请求 */
       requestAddOrEdit(formData) {
-        if(formData.unit === '' && formData.unitId === '') {
+        /*if(formData.unit === '' && formData.unitId === '') {
           this.$message.warning('抱歉，单位为必填项！');
           return;
-        }
+        }*/
         if(formData.meList.length === 0) {
           this.$message.warning('抱歉，请输入条码信息！');
           return;
@@ -600,7 +601,7 @@
                   }
                 }
               }
-              if(!formData.unit) {
+              /*if(!formData.unit) {
                 //此时为多单位
                 if (formData.meList.length<2){
                   this.$message.warning('多单位的商品条码行数至少要有两行，请再新增一行条码信息！');
@@ -639,7 +640,7 @@
                     return;
                   }
                 }
-              }
+              }*/
               //对最低和最高安全库存进行校验
               for (let i = 0; i < formData.stock.length; i++) {
                 let depotStockObj = formData.stock[i]
@@ -766,33 +767,33 @@
           })
         }
         //控制条码列表中的多属性列
-        if(value.length>0) {
+       /* if(value.length>0) {
           this.meTable.columns[2].type = FormTypes.input
         } else {
           this.meTable.columns[2].type = FormTypes.hidden
-        }
+        }*/
         this.barCodeSwitch = false;
         this.meTable.dataSource = []
       },
       onSkuChange() {
         let skuOneData = this.form.getFieldValue('skuOne')
         let skuTwoData = this.form.getFieldValue('skuTwo')
-        this.autoSkuList(skuOneData, skuTwoData)
+        // this.autoSkuList(skuOneData, skuTwoData)
       },
       onSkuOneDeSelect(value) {
         let skuOneData = this.form.getFieldValue('skuOne')
         let skuTwoData = this.form.getFieldValue('skuTwo')
         removeByVal(skuOneData, value)
-        this.autoSkuList(skuOneData, skuTwoData)
+        // this.autoSkuList(skuOneData, skuTwoData)
       },
       onSkuTwoDeSelect(value) {
         let skuOneData = this.form.getFieldValue('skuOne')
         let skuTwoData = this.form.getFieldValue('skuTwo')
         removeByVal(skuTwoData, value)
-        this.autoSkuList(skuOneData, skuTwoData)
+        // this.autoSkuList(skuOneData, skuTwoData)
       },
       autoSkuList(skuOneData, skuTwoData) {
-        let unit = this.form.getFieldValue('unit')
+        /*let unit = this.form.getFieldValue('unit')
         if(unit) {
           //计算多属性已经选择了几个
           let count = this.getNumByField('skuOne') + this.getNumByField('skuTwo')
@@ -837,7 +838,7 @@
         } else {
           this.$message.warning('请填写单位（注意不要勾选多单位）');
           this.barCodeSwitch = false;
-        }
+        }*/
       },
       getNumByField(field) {
         let num = 0

@@ -20,8 +20,8 @@
       <a-button v-if="billType === '销售订单'" v-print="'#saleOrderPrint'">普通打印</a-button>
       <a-button v-if="billType === '销售出库'" v-print="'#saleOutPrint'">普通打印</a-button>
       <a-button v-if="billType === '销售退货入库'" v-print="'#saleBackPrint'">普通打印</a-button>
-      <a-button v-if="billType === '其它入库'" v-print="'#otherInPrint'">普通打印</a-button>
-      <a-button v-if="billType === '其它出库'" v-print="'#otherOutPrint'">普通打印</a-button>
+      <a-button v-if="billType === '调货入库'" v-print="'#otherInPrint'">普通打印</a-button>
+      <a-button v-if="billType === '调货出库'" v-print="'#otherOutPrint'">普通打印</a-button>
       <a-button v-if="billType === '调拨出库'" v-print="'#allocationOutPrint'">普通打印</a-button>
       <a-button v-if="billType === '组装单'" v-print="'#assemblePrint'">普通打印</a-button>
       <a-button v-if="billType === '拆卸单'" v-print="'#disassemblePrint'">普通打印</a-button>
@@ -738,8 +738,8 @@
           </a-row>
         </section>
       </template>
-      <!--其它入库-->
-      <template v-else-if="billType === '其它入库'">
+      <!--调货入库-->
+      <template v-else-if="billType === '调货入库'">
         <section ref="print" id="otherInPrint">
           <a-row class="form-row" :gutter="24">
             <a-col :span="6">
@@ -784,8 +784,8 @@
           </a-row>
         </section>
       </template>
-      <!--其它出库-->
-      <template v-else-if="billType === '其它出库'">
+      <!--调货出库-->
+      <template v-else-if="billType === '调货出库'">
         <section ref="print" id="otherOutPrint">
           <a-row class="form-row" :gutter="24">
             <a-col :span="6">
@@ -1350,9 +1350,9 @@
           this.defColumns = this.saleOutColumns
         } else if (type === '销售退货入库') {
           this.defColumns = this.saleBackColumns
-        } else if (type === '其它入库') {
+        } else if (type === '调货入库') {
           this.defColumns = this.otherInColumns
-        } else if (type === '其它出库') {
+        } else if (type === '调货出库') {
           this.defColumns = this.otherOutColumns
         } else if (type === '调拨出库') {
           this.defColumns = this.allocationOutColumns
