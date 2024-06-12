@@ -168,7 +168,7 @@
           number: "",
           materialParam: "",
           type: "入库",
-          subType: "其它",
+          subType: "调货",
           roleType: Vue.ls.get('roleType'),
           organId: "",
           depotId: "",

@@ -160,7 +160,7 @@
           {title: '型号', dataIndex: 'model', width: 80, ellipsis:true},
           {title: '颜色', dataIndex: 'color', width: 80, ellipsis:true},
           {title: '类别', dataIndex: 'categoryName', width: 80, ellipsis:true},
-          {title: '单位', dataIndex: 'unitName', width: 60, ellipsis:true},
+          // {title: '单位', dataIndex: 'unitName', width: 60, ellipsis:true},
           {title: '单价', dataIndex: 'purchaseDecimal', sorter: (a, b) => a.purchaseDecimal - b.purchaseDecimal, width: 60},
           {title: '初始库存', dataIndex: 'initialStock', sorter: (a, b) => a.initialStock - b.initialStock, width: 60},
           {title: '库存', dataIndex: 'currentStock', sorter: (a, b) => a.currentStock - b.currentStock, width: 60,

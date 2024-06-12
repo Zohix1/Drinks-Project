@@ -245,7 +245,7 @@
           {title: '颜色', dataIndex: 'color'},
           {title: '类别', dataIndex: 'categoryName', width: 100, ellipsis:true},
           // {title: '扩展信息', dataIndex: 'materialOther', width: 100, ellipsis:true},
-          {title: '单位', dataIndex: 'unit', width: 100, ellipsis:true,
+          /*{title: '单位', dataIndex: 'unit', width: 100, ellipsis:true,
             customRender:function (t,r,index) {
               if (r) {
                 let name = t?t:r.unitName
@@ -256,7 +256,7 @@
                 }
               }
             }
-          },
+          },*/
           {title: '基础重量', dataIndex: 'weight', width: 80},
           {title: '保质期', dataIndex: 'expiryNum', width: 60},
           {title: '库存', dataIndex: 'stock', width: 80,

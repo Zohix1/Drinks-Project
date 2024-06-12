@@ -80,7 +80,32 @@ public interface DepotHeadMapperEx {
             @Param("offset") Integer offset,
             @Param("rows") Integer rows);
 
+    List<DepotHeadVo4InDetail> findInOutDetail1(
+            @Param("beginTime") String beginTime,
+            @Param("endTime") String endTime,
+            @Param("type") String type,
+            @Param("creatorArray") String[] creatorArray,
+            @Param("organArray") String[] organArray,
+            @Param("materialParam") String materialParam,
+            @Param("depotList") List<Long> depotList,
+            @Param("oId") Integer oId,
+            @Param("number") String number,
+            @Param("remark") String remark,
+            @Param("offset") Integer offset,
+            @Param("rows") Integer rows);
+
     int findInOutDetailCount(
+            @Param("beginTime") String beginTime,
+            @Param("endTime") String endTime,
+            @Param("type") String type,
+            @Param("creatorArray") String[] creatorArray,
+            @Param("organArray") String[] organArray,
+            @Param("materialParam") String materialParam,
+            @Param("depotList") List<Long> depotList,
+            @Param("oId") Integer oId,
+            @Param("number") String number,
+            @Param("remark") String remark);
+    int findInOutDetailCount1(
             @Param("beginTime") String beginTime,
             @Param("endTime") String endTime,
             @Param("type") String type,

@@ -169,13 +169,13 @@
             { title: '规格', key: 'standard', width: '7%', type: FormTypes.normal },
             { title: '型号', key: 'model', width: '6%', type: FormTypes.normal },
             { title: '颜色', key: 'color', width: '5%', type: FormTypes.normal },
-            { title: '扩展信息', key: 'materialOther', width: '5%', type: FormTypes.normal },
+            { title: '扩展信息1', key: 'materialOther', width: '5%', type: FormTypes.normal },
             { title: '库存', key: 'stock', width: '5%', type: FormTypes.normal },
-            { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
-            { title: '序列号', key: 'snList', width: '12%', type: FormTypes.popupJsh, kind: 'snAdd', multi: true },
-            { title: '批号', key: 'batchNumber', width: '7%', type: FormTypes.input },
-            { title: '有效期', key: 'expirationDate',width: '7%', type: FormTypes.date },
-            { title: '多属性', key: 'sku', width: '9%', type: FormTypes.normal },
+            // { title: '单位1', key: 'unit', width: '4%', type: FormTypes.normal },
+            // { title: '序列号', key: 'snList', width: '12%', type: FormTypes.popupJsh, kind: 'snAdd', multi: true },
+            // { title: '批号', key: 'batchNumber', width: '7%', type: FormTypes.input },
+            { title: '有效期', key: 'expirationDate',width: '7%', type: FormTypes.datetime },
+            // { title: '多属性2', key: 'sku', width: '9%', type: FormTypes.normal },
             { title: '数量', key: 'operNumber', width: '5%', type: FormTypes.inputNumber, statistics: true,
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
@@ -213,7 +213,7 @@
         this.changeColumnHide()
         this.changeFormTypes(this.materialTable.columns, 'snList', 0)
         this.changeFormTypes(this.materialTable.columns, 'batchNumber', 0)
-        this.changeFormTypes(this.materialTable.columns, 'expirationDate', 0)
+        this.changeFormTypes(this.materialTable.columns, 'expirationDate', 1)
         if (this.action === 'add') {
           this.addInit(this.prefixNo)
           this.fileList = []
@@ -248,7 +248,7 @@
         let billMain = Object.assign(this.model, allValues.formValue)
         let detailArr = allValues.tablesValue[0].values
         billMain.type = '入库'
-        billMain.subType = '其它'
+        billMain.subType = '调货'
         billMain.defaultNumber = billMain.number
         for(let item of detailArr){
           totalPrice += item.allPrice-0

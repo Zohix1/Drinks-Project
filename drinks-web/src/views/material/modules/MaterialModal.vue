@@ -95,7 +95,7 @@
                 </a-form-item>
               </a-col>
             </a-row>
-            <a-row class="form-row" :gutter="24">
+            <!--<a-row class="form-row" :gutter="24">
               <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="序列号" data-step="9" data-title="序列号"
                   data-intro="此处是商品的序列号开关，如果选择了有，则在采购入库单据需要录入该商品的序列号，在销售出库单据需要选择该商品的序列号进行出库">
@@ -118,7 +118,7 @@
                   </a-tooltip>
                 </a-form-item>
               </a-col>
-              <!--<a-col :md="6" :sm="24" v-if="!model.id">
+              &lt;!&ndash;<a-col :md="6" :sm="24" v-if="!model.id">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="多属性" data-step="11" data-title="多属性"
                   data-intro="多属性是针对的sku商品（比如服装、鞋帽行业），此处开关如果启用就可以在下方进行多sku的配置，配置具体的颜色、尺码之类的组合">
                   <a-tooltip title="多属性针对服装、鞋帽等行业，需要先录入单位才能激活此处输入框">
@@ -131,8 +131,8 @@
                     </a-select>
                   </a-tooltip>
                 </a-form-item>
-              </a-col>-->
-            </a-row>
+              </a-col>&ndash;&gt;
+            </a-row>-->
             <a-row class="form-row" :gutter="24">
               <a-col :md="12" :sm="24" v-if="manySkuSelected>=1">
                 <a-form-item :labelCol="{xs: { span: 24 },sm: { span: 4 }}" :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" :label="skuOneTitle">

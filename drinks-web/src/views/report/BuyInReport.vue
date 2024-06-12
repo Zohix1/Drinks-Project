@@ -120,7 +120,7 @@
           {title: '规格', dataIndex: 'materialStandard', width: 80, ellipsis:true},
           {title: '型号', dataIndex: 'materialModel', width: 80, ellipsis:true},
           {title: '扩展信息', dataIndex: 'materialOther', width: 150, ellipsis:true},
-          {title: '单位', dataIndex: 'materialUnit', width: 80, ellipsis:true},
+          // {title: '单位', dataIndex: 'materialUnit', width: 80, ellipsis:true},
           {title: '采购数量', dataIndex: 'inSum', sorter: (a, b) => a.inSum - b.inSum, width: 80},
           {title: '采购金额', dataIndex: 'inSumPrice', sorter: (a, b) => a.inSumPrice - b.inSumPrice, width: 80},
           {title: '退货数量', dataIndex: 'outSum', sorter: (a, b) => a.outSum - b.outSum, width: 80},

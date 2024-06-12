@@ -179,7 +179,7 @@
           {title: '名称', dataIndex: 'mname', width: 120, ellipsis:true},
           {title: '规格', dataIndex: 'standard', width: 60, ellipsis:true},
           {title: '型号', dataIndex: 'model', width: 60, ellipsis:true},
-          {title: '单位', dataIndex: 'mUnit', width: 50, ellipsis:true},
+          // {title: '单位', dataIndex: 'mUnit', width: 50, ellipsis:true},
           {title: '数量', dataIndex: 'operNumber', sorter: (a, b) => a.operNumber - b.operNumber, width: 60},
           {title: '单价', dataIndex: 'unitPrice', sorter: (a, b) => a.unitPrice - b.unitPrice, width: 60},
           {title: '金额', dataIndex: 'allPrice', sorter: (a, b) => a.allPrice - b.allPrice, width: 60},

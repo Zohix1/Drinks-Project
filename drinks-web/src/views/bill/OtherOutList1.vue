@@ -121,7 +121,7 @@
             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
             @change="handleTableChange">
             <span slot="action" slot-scope="text, record">
-              <a @click="myHandleDetail(record, '调货出库')">查看</a>
+              <a @click="myHandleDetail(record, '损耗出库')">查看</a>
               <a-divider v-if="btnEnableList.indexOf(1)>-1" type="vertical" />
               <a v-if="btnEnableList.indexOf(1)>-1" @click="myHandleEdit(record)">编辑</a>
               <a-divider v-if="btnEnableList.indexOf(1)>-1" type="vertical" />
@@ -139,7 +139,7 @@
         </div>
         <!-- table区域-end -->
         <!-- 表单区域 -->
-        <other-out-modal ref="modalForm" @ok="modalFormOk"></other-out-modal>
+        <other-out-modal1 ref="modalForm" @ok="modalFormOk"></other-out-modal1>
         <bill-detail ref="modalDetail" @ok="modalFormOk"></bill-detail>
       </a-card>
     </a-col>
@@ -147,17 +147,17 @@
 </template>
 <!--power by j i s h e n g h u a-->
 <script>
-  import OtherOutModal from './modules/OtherOutModal'
+  import OtherOutModal1 from './modules/OtherOutModal1'
   import BillDetail from './dialog/BillDetail'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import { BillListMixin } from './mixins/BillListMixin'
   import JDate from '@/components/jeecg/JDate'
   import Vue from 'vue'
   export default {
-    name: "OtherOutList",
+    name: "OtherOutList1",
     mixins:[JeecgListMixin,BillListMixin],
     components: {
-      OtherOutModal,
+      OtherOutModal1,
       BillDetail,
       JDate
     },
@@ -168,7 +168,7 @@
           number: "",
           materialParam: "",
           type: "出库",
-          subType: "调货",
+          subType: "损耗",
           roleType: Vue.ls.get('roleType'),
           organId: "",
           depotId: "",

@@ -172,7 +172,7 @@
           { title: '名称', dataIndex: 'name',width:100, ellipsis:true},
           { title: '规格', dataIndex: 'standard',width:100, ellipsis:true},
           { title: '型号', dataIndex: 'model',width:150, ellipsis:true},
-          { title: '单位', dataIndex: 'unit',width:50},
+          // { title: '单位', dataIndex: 'unit',width:50},
           { title: '数量', dataIndex: 'operNumber',width:80},
           { title: '单价', dataIndex: 'unitPrice',width:80},
           { title: '金额', dataIndex: 'allPrice',width:80},

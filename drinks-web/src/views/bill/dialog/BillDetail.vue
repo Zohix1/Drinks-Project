@@ -22,6 +22,7 @@
       <a-button v-if="billType === '销售退货入库'" v-print="'#saleBackPrint'">普通打印</a-button>
       <a-button v-if="billType === '调货入库'" v-print="'#otherInPrint'">普通打印</a-button>
       <a-button v-if="billType === '调货出库'" v-print="'#otherOutPrint'">普通打印</a-button>
+      <a-button v-if="billType === '损耗出库'" v-print="'#otherOutPrint1'">普通打印</a-button>
       <a-button v-if="billType === '调拨出库'" v-print="'#allocationOutPrint'">普通打印</a-button>
       <a-button v-if="billType === '组装单'" v-print="'#assemblePrint'">普通打印</a-button>
       <a-button v-if="billType === '拆卸单'" v-print="'#disassemblePrint'">普通打印</a-button>
@@ -830,6 +831,52 @@
           </a-row>
         </section>
       </template>
+      <!--损耗出库-->
+      <template v-else-if="billType === '损耗出库'">
+        <section ref="print" id="otherOutPrint1">
+          <a-row class="form-row" :gutter="24">
+            <a-col :span="6">
+              <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="客户">
+                <a-input v-decorator="['id']" hidden/>
+                {{model.organName}}
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单据日期">
+                {{model.operTimeStr}}
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单据编号">
+                {{model.number}}
+              </a-form-item>
+            </a-col>
+            <a-col :span="6">
+              <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="关联单据">
+                {{model.linkNumber}} {{model.billType}}
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <div :style="tableWidth">
+            <a-table
+              ref="table"
+              size="middle"
+              bordered
+              rowKey="id"
+              :pagination="false"
+              :columns="columns"
+              :dataSource="dataSource">
+            </a-table>
+          </div>
+          <a-row class="form-row" :gutter="24">
+            <a-col :lg="24" :md="24" :sm="24">
+              <a-form-item :labelCol="labelCol" :wrapperCol="{xs: { span: 24 },sm: { span: 24 }}" label="" style="padding:20px 10px;">
+                {{model.remark}}
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </section>
+      </template>
       <!--调拨出库-->
       <template v-else-if="billType === '调拨出库'">
         <section ref="print" id="allocationOutPrint">
@@ -1061,11 +1108,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位1', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1080,11 +1127,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位2', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1098,7 +1145,7 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
+          { title: '单位3', dataIndex: 'unit'},
           { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '已入库', dataIndex: 'finishNumber'},
@@ -1118,11 +1165,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位4', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1140,11 +1187,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位5', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1161,7 +1208,7 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
+          { title: '单位6', dataIndex: 'unit'},
           { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '已出库', dataIndex: 'finishNumber'},
@@ -1181,11 +1228,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位7', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1203,11 +1250,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位8', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1225,11 +1272,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位9', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1244,11 +1291,11 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
-          { title: '序列号', dataIndex: 'snList'},
-          { title: '批号', dataIndex: 'batchNumber'},
+          // { title: '单位10', dataIndex: 'unit'},
+          // { title: '序列号', dataIndex: 'snList'},
+          // { title: '批号', dataIndex: 'batchNumber'},
           { title: '有效期', dataIndex: 'expirationDate'},
-          { title: '多属性', dataIndex: 'sku'},
+          // { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
           { title: '金额', dataIndex: 'allPrice'},
@@ -1264,7 +1311,7 @@
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
           { title: '调入仓库', dataIndex: 'anotherDepotName'},
-          { title: '单位', dataIndex: 'unit'},
+          { title: '单位112', dataIndex: 'unit'},
           { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
@@ -1281,7 +1328,7 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
+          { title: '单位12', dataIndex: 'unit'},
           { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
@@ -1298,7 +1345,7 @@
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
+          { title: '单位13', dataIndex: 'unit'},
           { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
@@ -1313,7 +1360,7 @@
           { title: '型号', dataIndex: 'model'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '库存', dataIndex: 'stock'},
-          { title: '单位', dataIndex: 'unit'},
+          { title: '单位14', dataIndex: 'unit'},
           { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},
           { title: '单价', dataIndex: 'unitPrice'},
@@ -1353,6 +1400,8 @@
         } else if (type === '调货入库') {
           this.defColumns = this.otherInColumns
         } else if (type === '调货出库') {
+          this.defColumns = this.otherOutColumns
+        }else if (type === '损耗出库') {
           this.defColumns = this.otherOutColumns
         } else if (type === '调拨出库') {
           this.defColumns = this.allocationOutColumns

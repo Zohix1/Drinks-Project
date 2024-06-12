@@ -268,11 +268,11 @@
             { title: '颜色', key: 'color', width: '5%', type: FormTypes.normal },
             { title: '扩展信息', key: 'materialOther', width: '5%', type: FormTypes.normal },
             { title: '库存', key: 'stock', width: '5%', type: FormTypes.normal },
-            { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
-            { title: '序列号', key: 'snList', width: '12%', type: FormTypes.popupJsh, kind: 'snAdd', multi: true },
-            { title: '批号', key: 'batchNumber', width: '7%', type: FormTypes.input },
-            { title: '有效期', key: 'expirationDate',width: '7%', type: FormTypes.date },
-            { title: '多属性', key: 'sku', width: '9%', type: FormTypes.normal },
+            // { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
+            // { title: '序列号', key: 'snList', width: '12%', type: FormTypes.popupJsh, kind: 'snAdd', multi: true },
+            // { title: '批号', key: 'batchNumber', width: '7%', type: FormTypes.input },
+            { title: '有效期', key: 'expirationDate',width: '7%', type: FormTypes.datetime },
+            // { title: '多属性', key: 'sku', width: '9%', type: FormTypes.normal },
             { title: '原数量', key: 'preNumber', width: '4%', type: FormTypes.normal },
             { title: '已入库', key: 'finishNumber', width: '4%', type: FormTypes.normal },
             { title: '数量', key: 'operNumber', width: '4%', type: FormTypes.inputNumber, statistics: true,
@@ -329,7 +329,7 @@
         this.changeColumnHide()
         this.changeFormTypes(this.materialTable.columns, 'snList', 0)
         this.changeFormTypes(this.materialTable.columns, 'batchNumber', 0)
-        this.changeFormTypes(this.materialTable.columns, 'expirationDate', 0)
+        this.changeFormTypes(this.materialTable.columns, 'expirationDate', 1)
         this.changeFormTypes(this.materialTable.columns, 'preNumber', 0)
         this.changeFormTypes(this.materialTable.columns, 'finishNumber', 0)
         if (this.action === 'add') {

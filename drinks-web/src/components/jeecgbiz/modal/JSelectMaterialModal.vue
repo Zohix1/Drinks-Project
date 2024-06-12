@@ -148,8 +148,8 @@
           {dataIndex: 'standard', title: '规格'},
           {dataIndex: 'model', title: '型号'},
           {dataIndex: 'color', title: '颜色'},
-          {dataIndex: 'unit', title: '单位'},
-          {dataIndex: 'sku', title: '多属性'},
+          /*{dataIndex: 'unit', title: '单位'},*/
+          /*{dataIndex: 'sku', title: '多属性'},*/
           {dataIndex: 'stock', title: '库存'},
           {dataIndex: 'expand', title: '扩展信息'},
           {dataIndex: 'enableSerialNumber', title: '序列号', align: "center",

@@ -40,6 +40,16 @@ public class DepotHeadVo4InDetail {
 
     private String NewType;
 
+    private String expirationDate;
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
     private Long tenantId;
 
     public String getNumber() {

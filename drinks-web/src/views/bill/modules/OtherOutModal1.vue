@@ -1,3 +1,4 @@
+<!-- 损耗出库 -->
 <template>
   <j-modal
     :title="title"
@@ -19,6 +20,22 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <a-row class="form-row" :gutter="24">
+          <!--<a-col :lg="6" :md="12" :sm="24">
+            <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="客户">
+              <a-select placeholder="选择客户" v-decorator="[ 'organId' ]"
+                :dropdownMatchSelectWidth="false" showSearch optionFilterProp="children">
+                <div slot="dropdownRender" slot-scope="menu">
+                  <v-nodes :vnodes="menu" />
+                  <a-divider style="margin: 4px 0;" />
+                  <div v-if="isTenant" style="padding: 4px 8px; cursor: pointer;"
+                       @mousedown="e => e.preventDefault()" @click="addCustomer"><a-icon type="plus" /> 新增客户</div>
+                </div>
+                <a-select-option v-for="(item,index) in cusList" :key="index" :value="item.id">
+                  {{ item.supplier }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>-->
           <a-col :lg="6" :md="12" :sm="24">
             <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单据日期">
               <j-date v-decorator="['operTime', validatorRules.operTime]" :show-time="true"/>
@@ -29,7 +46,6 @@
               <a-input placeholder="请输入单据编号" v-decorator.trim="[ 'number' ]" :readOnly="true"/>
             </a-form-item>
           </a-col>
-          <a-col :lg="6" :md="12" :sm="24"></a-col>
           <a-col :lg="6" :md="12" :sm="24"></a-col>
         </a-row>
         <j-editable-table id="billModal"
@@ -42,6 +58,7 @@
           :rowNumber="false"
           :rowSelection="true"
           :actionButton="true"
+          :dragSort="true"
           @valueChange="onValueChange"
           @added="onAdded"
           @deleted="onDeleted">
@@ -86,30 +103,36 @@
         </a-row>
       </a-form>
     </a-spin>
+    <customer-modal ref="customerModalForm" @ok="customerModalFormOk"></customer-modal>
     <depot-modal ref="depotModalForm" @ok="depotModalFormOk"></depot-modal>
     <batch-set-depot ref="batchSetDepotModalForm" @ok="batchSetDepotModalFormOk"></batch-set-depot>
   </j-modal>
 </template>
 <script>
   import pick from 'lodash.pick'
+  import CustomerModal from '../../system/modules/CustomerModal'
   import DepotModal from '../../system/modules/DepotModal'
   import BatchSetDepot from '../dialog/BatchSetDepot'
   import { FormTypes } from '@/utils/JEditableTableUtil'
   import { JEditableTableMixin } from '@/mixins/JEditableTableMixin'
   import { BillModalMixin } from '../mixins/BillModalMixin'
-  import { getAction } from '@/api/manage'
   import { getMpListShort } from "@/utils/util"
   import JUpload from '@/components/jeecg/JUpload'
   import JDate from '@/components/jeecg/JDate'
   import Vue from 'vue'
   export default {
-    name: "AssembleModal",
+    name: "OtherOutModal1",
     mixins: [JEditableTableMixin, BillModalMixin],
     components: {
+      CustomerModal,
       DepotModal,
       BatchSetDepot,
       JUpload,
-      JDate
+      JDate,
+      VNodes: {
+        functional: true,
+        render: (h, ctx) => ctx.props.vnodes,
+      }
     },
     data () {
       return {
@@ -120,7 +143,7 @@
         addDefaultRowNum: 1,
         visible: false,
         operTimeStr: '',
-        prefixNo: 'ZZD',
+        prefixNo: 'QTCK',
         fileList:[],
         model: {},
         labelCol: {
@@ -137,7 +160,6 @@
           loading: false,
           dataSource: [],
           columns: [
-            { title: '商品类型',key: 'mType',width:'7%', type: FormTypes.normal },
             { title: '仓库名称', key: 'depotId', width: '8%', type: FormTypes.select, placeholder: '请选择${title}', options: [],
               allowSearch:true, validateRules: [{ required: true, message: '${title}不能为空' }]
             },
@@ -150,8 +172,11 @@
             { title: '颜色', key: 'color', width: '5%', type: FormTypes.normal },
             { title: '扩展信息', key: 'materialOther', width: '5%', type: FormTypes.normal },
             { title: '库存', key: 'stock', width: '5%', type: FormTypes.normal },
-            // { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
-            // { title: '多属性', key: 'sku', width: '4%', type: FormTypes.normal },
+            /*{ title: '单位111', key: 'unit', width: '4%', type: FormTypes.normal },
+            { title: '序列号', key: 'snList', width: '12%', type: FormTypes.popupJsh, kind: 'sn', multi: true },
+            { title: '批号', key: 'batchNumber', width: '7%', type: FormTypes.popupJsh, kind: 'batch', multi: false },*/
+            // { title: '有效期', key: 'expirationDate',width: '7%', type: FormTypes.input},
+            /*{ title: '多属性', key: 'sku', width: '9%', type: FormTypes.normal },*/
             { title: '数量', key: 'operNumber', width: '5%', type: FormTypes.inputNumber, statistics: true,
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
@@ -187,16 +212,18 @@
       editAfter() {
         this.billStatus = '0'
         this.changeColumnHide()
+        this.changeFormTypes(this.materialTable.columns, 'snList', 0)
+        this.changeFormTypes(this.materialTable.columns, 'batchNumber', 0)
+        this.changeFormTypes(this.materialTable.columns, 'expirationDate', 0)
         if (this.action === 'add') {
           this.addInit(this.prefixNo)
           this.fileList = []
         } else {
           this.model.operTime = this.model.operTimeStr
-          this.model.debt = (this.model.discountLastMoney - this.model.changeAmount).toFixed(2)
           this.fileList = this.model.fileName
           this.$nextTick(() => {
             this.form.setFieldsValue(pick(this.model,'organId', 'operTime', 'number', 'remark',
-              'discount','discountMoney','discountLastMoney','otherMoney','accountId','changeAmount','debt'))
+              'discount','discountMoney','discountLastMoney','otherMoney','accountId','changeAmount'))
           });
           // 加载子表数据
           let params = {
@@ -213,6 +240,7 @@
           this.model.tenantId = ''
           this.copyAddInit(this.prefixNo)
         }
+        this.initCustomer()
         this.initDepot()
       },
       //提交单据时整理成formData
@@ -220,8 +248,8 @@
         let totalPrice = 0
         let billMain = Object.assign(this.model, allValues.formValue)
         let detailArr = allValues.tablesValue[0].values
-        billMain.type = '其它'
-        billMain.subType = '组装单'
+        billMain.type = '出库'
+        billMain.subType = '损耗'
         billMain.defaultNumber = billMain.number
         for(let item of detailArr){
           totalPrice += item.allPrice-0
@@ -241,24 +269,6 @@
           rows: JSON.stringify(detailArr),
         }
       },
-      onAdded(event) {
-        const { row, target } = event
-        getAction('/depot/findDepotByCurrentUser').then((res) => {
-          if (res.code === 200) {
-            let arr = res.data
-            for (let i = 0; i < arr.length; i++) {
-              if(arr[i].isDefault){
-                target.setValues([{rowKey: row.id, values: {depotId: arr[i].id+''}}])
-              }
-            }
-          }
-        })
-        if(target.rows.length>=2) {
-          target.setValues([{rowKey: row.id, values: {mType: '普通子件'}}])
-        } else {
-          target.setValues([{rowKey: row.id, values: {mType: '组合件'}}])
-        }
-      }
     }
   }
 </script>

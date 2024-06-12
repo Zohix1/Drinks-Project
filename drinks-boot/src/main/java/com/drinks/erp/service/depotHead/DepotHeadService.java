@@ -541,6 +541,29 @@ public class DepotHeadService {
         }
         return result;
     }
+    public List<DepotHeadVo4InDetail> findInOutDetail1(String beginTime, String endTime, String type, String [] creatorArray,
+                                                      String [] organArray, String materialParam, List<Long> depotList, Integer oId, String number,
+                                                      String remark, Integer offset, Integer rows) throws Exception{
+        List<DepotHeadVo4InDetail> list = null;
+        try{
+            list =depotHeadMapperEx.findInOutDetail1(beginTime, endTime, type, creatorArray, organArray, materialParam, depotList, oId, number, remark, offset, rows);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return list;
+    }
+
+    public int findInOutDetailCount1(String beginTime, String endTime, String type, String [] creatorArray,
+                              String [] organArray, String materialParam, List<Long> depotList, Integer oId, String number,
+                              String remark) throws Exception{
+        int result = 0;
+        try{
+            result =depotHeadMapperEx.findInOutDetailCount1(beginTime, endTime, type, creatorArray, organArray, materialParam, depotList, oId, number, remark);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return result;
+    }
 
     public List<DepotHeadVo4InOutMCount> findInOutMaterialCount(String beginTime, String endTime, String type, String materialParam,
                                                                 List<Long> depotList, Integer oId, String roleType, Integer offset, Integer rows)throws Exception {
@@ -811,6 +834,10 @@ public class DepotHeadService {
         //欠款校验
         if("采购退货".equals(subType) || "销售退货".equals(subType)) {
             //退货单对应的原单实际欠款（这里面要除去收付款的金额）
+            if("".equals(depotHead.getLinkNumber()) || depotHead.getLinkNumber()==null){
+                throw new BusinessRunTimeException(ExceptionConstants.DEPOT_HEAD_BACK_BILL_DEBT_OVER_CODE1,
+                        String.format(ExceptionConstants.DEPOT_HEAD_BACK_BILL_DEBT_OVER_MSG1));
+            }
             BigDecimal originalRealDebt = getOriginalRealDebt(depotHead.getLinkNumber(), depotHead.getNumber());
             JSONObject billObj = JSONObject.parseObject(beanJson);
             if(billObj!=null && billObj.get("debt")!=null && originalRealDebt.compareTo(billObj.getBigDecimal("debt"))<0) {

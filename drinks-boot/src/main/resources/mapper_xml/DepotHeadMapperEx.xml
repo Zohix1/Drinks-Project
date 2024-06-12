@@ -28,6 +28,7 @@
         <result column="DName" jdbcType="VARCHAR" property="DName" />
         <result column="OperTime" jdbcType="VARCHAR" property="OperTime" />
         <result column="NewType" jdbcType="VARCHAR" property="NewType" />
+        <result column="expiration_date" jdbcType="TIMESTAMP" property="expirationDate" />
     </resultMap>
 
     <resultMap id="ResultInOutMaterialCount" type="com.drinks.erp.datasource.vo.DepotHeadVo4InOutMCount">
@@ -261,7 +262,7 @@
         select dh.number,me.bar_code, m.`name` MName,m.model,m.standard,di.unit_price,di.material_unit as mUnit,
         di.oper_number,di.all_price, ifnull(di.tax_rate,0) tax_rate, ifnull(di.tax_money,0) tax_money, ifnull(di.tax_last_money,0) tax_last_money,
         s.supplier SName,d.dName DName, date_format(dh.oper_time, '%Y-%m-%d') OperTime, concat(dh.sub_type,dh.type) as NewType,
-        concat_ws('  ',dh.remark,di.remark) as newRemark
+        concat_ws('  ',dh.remark,di.remark) as newRemark,di.expiration_date
         from jsh_depot_head dh
         left join jsh_depot_item di on di.header_id=dh.id and ifnull(di.delete_flag,'0') !='1'
         left join jsh_material m on m.id=di.material_id and ifnull(m.delete_flag,'0') !='1'
@@ -293,7 +294,64 @@
             <foreach collection="organArray" item="organId" separator=",">
                 #{organId}
             </foreach>
-            ) or dh.sub_type='采购退货' or dh.sub_type='零售')
+            ) or dh.sub_type='采购退货' or dh.sub_type='零售' OR dh.sub_type='其它' OR dh.sub_type='调货' OR dh.sub_type='损耗')
+        </if>
+        <if test="number != null and number !=''">
+            <bind name="bindNumber" value="'%'+number+'%'"/>
+            and dh.number like #{bindNumber}
+        </if>
+        <if test="materialParam != null and materialParam !=''">
+            <bind name="bindKey" value="'%'+materialParam+'%'"/>
+            and (me.bar_code like #{bindKey} or m.name like #{bindKey} or m.standard like #{bindKey} or m.model like #{bindKey})
+        </if>
+        <if test="remark != null and remark !=''">
+            <bind name="bindRemark" value="'%'+remark+'%'"/>
+            and (dh.remark like #{bindRemark} or di.remark like #{bindRemark})
+        </if>
+        and dh.sub_type!='调拨'
+        and ifnull(dh.delete_flag,'0') !='1'
+        ORDER BY oper_time DESC,number desc
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+    <select id="findInOutDetail1" parameterType="com.drinks.erp.datasource.entities.DepotItemExample" resultMap="ResultWithInfoExMap">
+        select dh.number,me.bar_code, m.`name` MName,m.model,m.standard,di.unit_price,di.material_unit as mUnit,
+        di.oper_number,di.all_price, ifnull(di.tax_rate,0) tax_rate, ifnull(di.tax_money,0) tax_money, ifnull(di.tax_last_money,0) tax_last_money,
+        s.supplier SName,d.dName DName, date_format(dh.oper_time, '%Y-%m-%d') OperTime, concat(dh.sub_type,dh.type) as NewType,
+        concat_ws('  ',dh.remark,di.remark) as newRemark,DATE_FORMAT(di.expiration_date, '%Y-%m-%d') AS expiration_date
+        from jsh_depot_head dh
+        left join jsh_depot_item di on di.header_id=dh.id and ifnull(di.delete_flag,'0') !='1'
+        left join jsh_material m on m.id=di.material_id and ifnull(m.delete_flag,'0') !='1'
+        left join jsh_material_extend me on me.id=di.material_extend_id and ifnull(me.delete_Flag,'0') !='1'
+        left join jsh_supplier s on s.id=dh.organ_id and ifnull(s.delete_Flag,'0') !='1'
+        left join (select id,name as dName,delete_Flag from jsh_depot ) d on d.id=di.depot_id and ifnull(d.delete_Flag,'0') !='1'
+        where dh.oper_time >=#{beginTime} and dh.oper_time &lt;=#{endTime} and di.expiration_date BETWEEN  CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+        <if test="oId != null">
+            and dh.organ_id = #{oId}
+        </if>
+        <if test="depotList.size()>0">
+            and di.depot_id in
+            <foreach collection="depotList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="type != null">
+            and dh.type=#{type}
+        </if>
+        <if test="creatorArray != null">
+            and dh.creator in (
+            <foreach collection="creatorArray" item="creator" separator=",">
+                #{creator}
+            </foreach>
+            )
+        </if>
+        <if test="organArray != null and organArray !=''">
+            and (dh.organ_id in (
+            <foreach collection="organArray" item="organId" separator=",">
+                #{organId}
+            </foreach>
+            ) or dh.sub_type='采购退货' or dh.sub_type='零售' OR dh.sub_type='其它' OR dh.sub_type='调货' OR dh.sub_type='损耗')
         </if>
         <if test="number != null and number !=''">
             <bind name="bindNumber" value="'%'+number+'%'"/>
@@ -348,7 +406,58 @@
             <foreach collection="organArray" item="organId" separator=",">
                 #{organId}
             </foreach>
-            ) or dh.sub_type='采购退货' or dh.sub_type='零售')
+            ) or dh.sub_type='采购退货' or dh.sub_type='零售' OR dh.sub_type='其它' OR dh.sub_type='调货' OR dh.sub_type='损耗')
+        </if>
+        <if test="number != null and number !=''">
+            <bind name="bindNumber" value="'%'+number+'%'"/>
+            and dh.number like #{bindNumber}
+        </if>
+        <if test="materialParam != null and materialParam !=''">
+            <bind name="bindKey" value="'%'+materialParam+'%'"/>
+            and (me.bar_code like #{bindKey} or m.name like #{bindKey} or m.standard like #{bindKey} or m.model like #{bindKey})
+        </if>
+        <if test="remark != null and remark !=''">
+            <bind name="bindRemark" value="'%'+remark+'%'"/>
+            and (dh.remark like #{bindRemark} or di.remark like #{bindRemark})
+        </if>
+        and dh.sub_type!='调拨'
+        and ifnull(dh.delete_flag,'0') !='1'
+        ORDER BY oper_time DESC,number desc
+    </select>
+    <select id="findInOutDetailCount1" resultType="java.lang.Integer">
+        select count(1)
+        from jsh_depot_head dh
+        left join jsh_depot_item di on di.header_id=dh.id and ifnull(di.delete_flag,'0') !='1'
+        left join jsh_material m on m.id=di.material_id and ifnull(m.delete_Flag,'0') !='1'
+        left join jsh_material_extend me on me.id=di.material_extend_id and ifnull(me.delete_Flag,'0') !='1'
+        left join jsh_supplier s on s.id=dh.organ_id and ifnull(s.delete_Flag,'0') !='1'
+        left join (select id,name as dName,delete_Flag from jsh_depot) d on d.id=di.depot_id and ifnull(d.delete_Flag,'0') !='1'
+        where dh.oper_time >=#{beginTime} and dh.oper_time &lt;=#{endTime} and di.expiration_date BETWEEN  CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+        <if test="oId != null">
+            and dh.organ_id = #{oId}
+        </if>
+        <if test="depotList.size()>0">
+            and di.depot_id in
+            <foreach collection="depotList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="type != null">
+            and dh.type=#{type}
+        </if>
+        <if test="creatorArray != null">
+            and dh.creator in (
+            <foreach collection="creatorArray" item="creator" separator=",">
+                #{creator}
+            </foreach>
+            )
+        </if>
+        <if test="organArray != null and organArray !=''">
+            and (dh.organ_id in (
+            <foreach collection="organArray" item="organId" separator=",">
+                #{organId}
+            </foreach>
+            ) or dh.sub_type='采购退货' or dh.sub_type='零售' OR dh.sub_type='其它' OR dh.sub_type='调货' OR dh.sub_type='损耗')
         </if>
         <if test="number != null and number !=''">
             <bind name="bindNumber" value="'%'+number+'%'"/>
@@ -394,7 +503,7 @@
             <foreach collection="organArray" item="organId" separator=",">
                 #{organId}
             </foreach>
-            ) or dh.sub_type='采购退货' or dh.sub_type='零售')
+            ) or dh.sub_type='采购退货' or dh.sub_type='零售' OR dh.sub_type='其它' OR dh.sub_type='调货' OR dh.sub_type='损耗')
         </if>
         <if test="depotList.size()>0">
             <if test="type == '入库'">
@@ -451,7 +560,7 @@
             <foreach collection="organArray" item="organId" separator=",">
                 #{organId}
             </foreach>
-            ) or dh.sub_type='采购退货' or dh.sub_type='零售')
+            ) or dh.sub_type='采购退货' or dh.sub_type='零售' OR dh.sub_type='其它' OR dh.sub_type='调货' OR dh.sub_type='损耗')
         </if>
         <if test="depotList.size()>0">
             <if test="type == '入库'">
